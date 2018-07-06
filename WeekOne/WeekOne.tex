@@ -1,38 +1,51 @@
-\documentclass[10pt,twocolumn,letterpaper]{article}
+\documentclass[a4paper]{article}
 
-\usepackage{cvpr}
-\usepackage{times}
-\usepackage{epsfig}
-\usepackage{picinpar}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
 \usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{booktabs}
-\usepackage{float}
 \usepackage{graphicx}
+\usepackage{url}
 \usepackage{subfigure}
-\usepackage[breaklinks=true,bookmarks=false,colorlinks,
-            linkcolor=red,
-            anchorcolor=blue,
-            citecolor=green,
-            backref=page]{hyperref}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{outline} 
+\usepackage{pmgraph} 
+\usepackage[normalem]{ulem}
+\usepackage{verbatim}
+% \usepackage{minted} % need `-shell-escape' argument for local compile
 
-\cvprfinalcopy % *** Uncomment this line for the final submission
+\title{
+    \vspace*{1in}
+    \includegraphics[width=2.75in]{zhenglab-logo.png} \\
+    \vspace*{1.2in}
+    \textbf{\huge Weekly Work Report}
+    \vspace{0.2in}
+}
 
-\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
-\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+\author{Wenjie Niu \\
+    \vspace*{0.5in} \\
+    \textbf{VISION@OUC} \\
+    \vspace*{1in}
+}
 
-% Pages are numbered in submission mode, and unnumbered in camera-ready
-%\ifcvprfinal\pagestyle{empty}\fi
+\date{\today}
+
+
 \begin{document}
 
-%%%%%%%%% TITLE
-\title{Week One: Introoduction to Deep Learning}
-\author{Wenjie Niu\\\ July 1st-7st,2018}
-
-
 \maketitle
-%%%%%%%%% BODY TEXT
-\section{Courses in This Specialization}
+\setcounter{page}{0}
+\thispagestyle{empty}
+\newpage
+
+This week, I start the Deep Learning course. Although I watched the course and took some notes before, the real and deep understanding is not enough for me. Therefore, it's necesaary to learn again. In this week, I'm learning the introduction of deep learning, the main content is here as following.\par
+
+\section{Content}
+\subsection{Courses in This Specialization}
 \begin{itemize}
 \item Neural Networks and  Deep Learning
 \item Improving Deep Neural Networks: Hyperparemeter tuning, Regularization and Optimization.
@@ -41,61 +54,114 @@
 \item Natural Language Processing: Building sequence models
 \end{itemize}
 
-\section{Neural Network}
+
+\subsection{Neural Network}
 It's a powerful learning algorith inspired by how the brain works. Here are 2 examples to show what is a Neural Networks.
 \begin{itemize}
-\item Example 1: Single Neural Networks
+\item Example 1: Single Neural Networks.\par 
+Given data about the size of houses in real estate market, and you need to fit a function that will predict their price.The curve of the price is similar to Rectified Linear Unit(ReLU) fuction in Fig.~\ref{fig:ReLU}. While the difference is that the real curve can never be negative and it starts at zero.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{ReLU.png}
+\end{center}
+   \caption{Rectified Linear Unit(ReLU) fuction}
+\label{fig:ReLU}
+\end{figure}
+
 %%%两个图需要自己画
-\item Example 2: Multiple Neural Networks
-%%%两个图需要自己画
+\item Example 2: Multiple Neural Networks\par
+The price of houses can be affected by other features such as size, numbers of bedrooms, zip code and wealth. The role of the neural network is to predict the price and it will automatically generate the hidden units. We only need to give the input x and the output y as shown in Fig.~\ref{fig:Multiple}.
 \end{itemize}
 
-\section{Supervised Learning for Neural Network}
-In supervised learning, we are given a data set and already know what our correct output should look like, having the idea that there is a relationship between the input and the output as shown in Table~\ref{Tab:Examples }.\par
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Multiple.png}
+\end{center}
+   \caption{Multiple Neural Network~\cite{Coursera.org}}
+\label{fig:Multiple}
+\end{figure}
+
+
+\subsection{Supervised Learning for Neural Network}
+In supervised learning, we are given a data set and already know what our correct output should look like, having the idea that there is a relationship between the input and the output as shown in Table~\ref{tab:Examples}.\par
 Supervised learning is categorized into ``regression" and ``classification" problems. In a regression problem, we are trying to map input variables to some continuous function, predicting the results within the a continuous output. In a classification problem, we are trying to map input variables into discrete categories.\par
 
-\begin{table}[H]
-\begin{center}
-\caption{Here are some examples of supervised learning}
-\begin{tabular}{ccc}
-\toprule
-Input(x) & Output(y) & Application \\
-\midrule
-Home features & Price & Real estate \\
-Ad, user info & Click on ad?(0/1) & Online advertising \\
-Image & Object & Photo tagging \\
-Audio & Text transcript & Speech recognition \\
-English & Chinese & Language translation \\
-Image, Radar info & Other cars position & Autonomous driving \\
-\bottomrule
-\end{tabular}
-\label{Tab:Examples }
-\end{center}
+\begin{table}[hb]
+    \centering
+    \caption{Here are some examples of supervised learning}
+    \begin{tabular}{|c|c|c|}
+        \hline \\
+        Input(x) & Output(y) & Application \\
+        \hline \\
+        Home features & Price & Real estate \\ \hline
+		Ad, user info & Click on ad?(0/1) & Online advertising \\ 		\hline
+		Image & Object & Photo tagging \\ \hline
+		Audio & Text transcript & Speech recognition \\ \hline
+		English & Chinese & Language translation \\ \hline
+		Image, Radar info & Other cars position & Autonomous driving \\ \hline
+    \end{tabular}
+    \label{tab:Examples}
 \end{table}
 
 There are different types of neural network, for example Convolution Neural Network(CNN) used often for image application and Recurrent Neural Network used for one-dimensional sequence data.\par
 Another significant concept is about structured in Fig.~\ref{fig:Structured} and unstructured data in Fig.~\ref{fig:Unstructured}. Structured data refer to things that has a defined meaning such as price, age while unstructured data refers to thing like pixel, raw audio, text.\par
 
-
 \begin{figure}
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=1.5in]{Structured.png}
-\caption{Structured data}
+\includegraphics[width=2.5in]{Structured.png}
+\caption{Structured data~\cite{Coursera.org}}
 \label{fig:Structured}
 \end{minipage}%
 \begin{minipage}[t]{0.5\linewidth}
 \centering
-\includegraphics[width=1.62in]{Unstructured.png}
-\caption{Unstructured data}
+\includegraphics[width=2.62in]{Unstructured.png}
+\caption{Unstructured data~\cite{Coursera.org}}
 \label{fig:Unstructured}
 \end{minipage}
 \end{figure}
 
 
-%{\small
-%\bibliographystyle{ieee}
-%\bibliography{egbib}
-%}
+\subsection{Why Is Deep Learning Taking off?}
+Deep learning is taking off due to a large amount of \emph{data} avilable through the digitization of society, faster \emph{computition} and innovation in the development of neural network \emph{algorithm}.\par
+When there are a small training set, the performance depends much on skill at hand engineer features. But it doesn't work when a huge training set. Two things have to be considered to get the high level of performance:
+\begin{itemize}
+\item Being able to training enough neural network
+\item Huge amount of labeld data 
+\end{itemize}
+In a word, scale drives deep learning progress.
+
+
+\section{Progress in this week}
+This week I learnt the introduction of deep learning including some new concepts such as neural network, supervised learning, and the reason of deep learning's prosperity. The following are the steps you took:
+\begin{description}
+\item [Step 1]
+Watched the courses clips.
+\item[Step 2]
+Wathced again and took notes.
+\item[Step 3]
+Grasped the related pictures and wrote the Latex.
+\item[Step 4]
+Organized the content and push to the github.
+\end{description}
+
+
+\section{Plan}
+
+\begin{tabular}{rl}
+	\textbf{Objective:} & Learn Neural Network and Deep Learning by myself. \\
+    %\textbf{Deadline:} & XXXX 
+\end{tabular}
+
+\begin{description}
+    \item[\normalfont 2018.07.08---2018.05.14] Watch week two course clips and take the note.
+    \item[\normalfont 2018.07.15---2018.07.21] Do so on week three course.
+    \item[\normalfont 2018.05.22---2018.05.38] Do so on week tfour course.
+\end{description}
+
+% If you don't cite any references, please comment the following two lines
+\bibliographystyle{ieee}
+\bibliography{WeekOne}
 
 \end{document}
