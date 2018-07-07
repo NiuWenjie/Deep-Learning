@@ -141,6 +141,86 @@ After the part of courses, there are still some concept not being understood. In
  \item Increasing the size of a neural network generally does not hurt an algorithm's performance, and it may help significantly; Increasing the traing set size generally does not hurt an algorithm's performance, and it may help significantly.
 \end{itemize}
 
+\subsection{Binary Classification}
+In a binary classificartion problem, the result is a discrete value output.\par
+\textbf{For example: Cat vs. Non-Cat}\par
+The goal is to train a classifier that the input is an image represented by a feature vector $x$, and predicts whether the corresponding label is 1 or 0. In this case, whether this is a cat image(1) or a non-cat image(0).\par
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=1\linewidth]{CattoPixel.png}
+\end{center}
+   \caption{Here is the figure of cat-to-matrics~\cite{mooc.com}\cite{Coursera.org}.}
+   \label{fig:cat}
+\end{figure}
+
+An image is store in the computer in three seperate matrics corresponding to the Red, Green, and Blue color channels of the image. The three matrics have the same size as the image, for example, the resolution of the cat is 64 pixels $\times$ 64 pixels, the three matrics(RGB) are 64 $\times$ 64 each as figure.~\ref{fig:cat}.\par
+The value in a cell represents the pixel intensity which will be used to create a feature vector of n-dimension. In pattern recognition and machine learning,a feature vector represents an object, in this case, a cat or no cat.\par
+To create a feature vector $x$, the pixel intensity values will be "unroll" or "reshape" for each other color. The dimension of the  input feature vector $x$ is $n_x$=64 $\times$ 64 $\times$ 3 = 12288.
+
+\begin{equation*}
+x=\begin{bmatrix}
+	255\\
+    231\\
+    42\\
+    \vdots \\
+    255\\
+    134\\
+    202\\
+    \vdots \\
+    255\\
+    134\\
+    93\\
+    \vdots 
+\end{bmatrix}
+\end{equation*}
+
+\textbf{Notation}\par
+The last matric in Eq.~\ref{Eq:1}
+\begin{equation}
+(x,y) \quad \quad x \in R^{n_x},y \in \{0,1\}
+\label{Eq:1}
+\end{equation} \par
+m training example in Eq.~\ref{Eq:2}
+\begin{equation}
+\{(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),\cdots,(x^{(m)},y^{(m)})\}
+\label{Eq:2}
+\end{equation}
+
+
+\subsection{Logistic Regression}
+Logistic regression is a learning algorithm used in a supervised learning problem when the output $y$ are all either zero or one. The goal of a logistic regression is to minimize the error between its predictions and training data.\par
+Like the example in last subsection, given  an image represented by a feature vector  $x$, the algorithm will evaluate the probability of a cat being in that image like~\ref{Eq:3}
+\begin{equation}
+Given \quad x, \quad \hat{y}=P(y=1|x),\quad where \quad 0 \leq \hat{y} \leq 1
+\label{Eq:3}
+\end{equation}
+The parameters used in Logistic Regression are:
+\begin{itemize}
+\item The input features vector: $x \in R^{n_x} $, where $n_x$ is the number of features
+\item The traing label: $y \in \{0,1\}$
+\item The weights: $\omega \in R^{n_x}$, where $n_x$ is the number of features
+\item The threshold: $b \in R$
+\item The output: $\hat{y}=\sigma(\omega^T+b)$
+\item Sigmoid function: $s=\sigma(\omega^T+b)=\sigma(z)=\frac{1}{1+e^{-z}}$
+\end{itemize}\par
+$(\omega^T+b)$ is a linear function $(ax+b)$, but since we are looking for a probability constraint between [0.1], the sigmoid function as shown in figure.~\ref{fig:sigmoid} is used.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=1\linewidth]{Sigmoid.png}
+\end{center}
+   \caption{Sigmoid function}
+   \label{fig:sigmoid}
+\end{figure}
+Some observation from the graph:
+\begin{itemize}
+\item If $z$ is a large positive number, then $\sigma(z)=1$
+\item If $z$ is small or large negative number, then $\sigma(z)=0$
+\item If $z=0$, then $\sigma(z)=0.5$
+\end{itemize}
+
+
 \section{Progress in this week}
 This week I learnt the introduction of deep learning including some new concepts such as neural network, supervised learning, and the reason of deep learning's prosperity. The following are the steps you took:
 \begin{description}
@@ -163,7 +243,7 @@ Organized the content and push to the github.
 \end{tabular}
 
 \begin{description}
-    \item[\normalfont 2018.07.08---2018.05.14] Watch week two course clips and take the note.
+    \item[\normalfont 2018.07.08---2018.05.14] Watch the rest of week two course clips and take the note.
     \item[\normalfont 2018.07.15---2018.07.21] Do so on week three course.
     \item[\normalfont 2018.05.22---2018.05.38] Do so on week tfour course.
 \end{description}

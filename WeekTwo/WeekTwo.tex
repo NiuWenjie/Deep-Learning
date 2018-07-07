@@ -1,0 +1,104 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{outline} 
+\usepackage{pmgraph} 
+\usepackage[normalem]{ulem}
+\usepackage{verbatim}
+% \usepackage{minted} % need `-shell-escape' argument for local compile
+
+\title{
+    \vspace*{1in}
+    \includegraphics[width=2.75in]{zhenglab-logo.png} \\
+    \vspace*{1.2in}
+    \textbf{\huge Weekly Work Report}
+    \vspace{0.2in}
+}
+
+\author{Wenjie Niu \\
+    \vspace*{0.5in} \\
+    \textbf{VISION@OUC} \\
+    \vspace*{1in}
+}
+
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\newpage
+
+%%%Abstract
+
+\section{Content}
+\subsection{Logistic Regression: Cost Function}
+To train the parameters $\omega$ and $b$, we need to define a cost function. In logistic regression, we want $\hat{y}^{(i)} \approx y^{(i)}$.\par
+\textbf{Loss(error) function}\par
+The loss function measures the discrepancy between the prediction$(\hat{y}^{(i)})$ and the desired output $(y^{(i)})$. In other words, the loss function as shown in Eq.~\ref{Eq:1}~\ref{Eq:2} computes the error for a single training example.
+\begin{equation}
+L(\hat{y}^{(i)},y^{(i)})=\frac{1}{2}(\hat{y}^{(i)},y^{(i)})^2
+\label{Eq:1}
+\end{equation}
+\begin{equation}
+L(\hat{y}^{(i)},y^{(i)})=-[y^{(i)}\log(\hat{y}^{(i)})+(1-y^{(i)})\log(1-\hat{y}^{(i)})]
+\label{Eq:2}
+\end{equation}
+\begin{itemize}
+\item If $y^{(i)}=1$: $L(\hat{y}^{(i)},y^{(i)})=-\log(\hat{y}^{(i)})$ where $\log(\hat{y}^{(i)})$ and $\hat{y}^{(i)}$ should be close to 1
+\item If $y^{(i)}=0$: $L(\hat{y}^{(i)},y^{(i)})=-\log(1-\hat{y}^{(i)})$ where $\log(1-\hat{y}^{(i)})$ and $\hat{y}^{(i)}$ should be close to 0
+\end{itemize}
+
+\textbf{Cost function}\par
+The cost function is the average of the loss function of the entire training set. We are going to find the parameters $\omega$ and $b$ that minimize the overall cost function as Eq.~\ref{Eq:3}
+\begin{equation}
+J(\omega,b)=\frac{1}{m}\sigma[(y^{(i)})\log(\hat{y}^{(i)})+(1-y^{(i)})\log(1-\hat{y}^{(i)})]
+\label{Eq:3}
+\end{equation}
+
+
+\section{Progress in this week}
+
+\begin{description}
+\item [Step 1]
+Watched the courses clips.
+\item[Step 2]
+Wathced again and took notes.
+\item[Step 3]
+Grasped the related pictures and wrote the Latex.
+\item[Step 4]
+Organized the content and push to the github.
+\end{description}
+
+
+\section{Plan}
+
+\begin{tabular}{rl}
+	\textbf{Objective:} & Learn Neural Network and Deep Learning by myself. \\
+    %\textbf{Deadline:} & XXXX 
+\end{tabular}
+
+\begin{description}
+    \item[\normalfont 2018.07.08---2018.05.14] Watch the rest of week two course clips and take the note.
+    \item[\normalfont 2018.07.15---2018.07.21] Do so on week three course.
+    \item[\normalfont 2018.05.22---2018.05.38] Do so on week tfour course.
+\end{description}
+
+% If you don't cite any references, please comment the following two lines
+\bibliographystyle{ieee}
+\bibliography{WeekTwo}
+
+\end{document}
