@@ -63,12 +63,230 @@ L(\hat{y}^{(i)},y^{(i)})=-[y^{(i)}\log(\hat{y}^{(i)})+(1-y^{(i)})\log(1-\hat{y}^
 \end{itemize}
 
 \textbf{Cost function}\par
-The cost function is the average of the loss function of the entire training set. We are going to find the parameters $\omega$ and $b$ that minimize the overall cost function as Eq.~\ref{Eq:3}
+The cost function is the average of the loss function of the entire training set. We are going to find the parameters $\omega$ and $b$ that minimize the overall cost function as Eq.~\ref{Eq:3} while the cost function model in figure.~\ref{fig:GD}.
 \begin{equation}
 J(\omega,b)=\frac{1}{m}\sigma[(y^{(i)})\log(\hat{y}^{(i)})+(1-y^{(i)})\log(1-\hat{y}^{(i)})]
 \label{Eq:3}
 \end{equation}
 
+
+\subsection{Gradient Descent}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{GradientDescent.png}
+\end{center}
+   \caption{Gradient Descent Model}
+\label{fig:GD}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{GradientDescent-1.png}
+\end{center}
+   \caption{Gradient Descent Model in Two-dimension}
+\label{fig:GD-1}
+\end{figure}
+
+If the gradient model is assumed in two-dimension($\omega$,$J(\omega)$) as the figure.~\ref{fig:GD-1} shown, it is convenient to observe the slope of the cost function at anyone point. In this case, the cost function in gradient descent is as Eq.~\ref{Eq:4}
+\begin{equation}
+\omega:=\omega-\alpha\frac{\partial{J(\omega)}}{\partial \omega}
+\label{Eq:4}
+\end{equation}\par
+Where `` : " is equal to `` update "; `` $\alpha$ " represents learning rate; `` $\partial$ " represents `` derivative term ". Therefore, the cost function $J(\omega,b)$ in real case is as Eq.~\ref{Eq:5}\ref{Eq:6} 
+\begin{equation}
+\omega:=\omega-\alpha\frac{\partial{J(\omega,b)}}{\partial \omega}
+\label{Eq:5}
+\end{equation}
+\begin{equation}
+b:=b-\alpha\frac{\partial{J(\omega,b)}}{\partial b}
+\label{Eq:6}
+\end{equation}
+
+
+\subsection{Derivatives with a Computation Graph}
+The computations of a  neural network are all organized in terms of a forward path or a forward propagation step in which we compute the output of the neural network followed by a backward pass or a back complication step which we use to compute gradients or computes derivatives. Take a function $J(a,b,c)$ as an example in Eq.~\ref{Eq:7}.
+\begin{equation}
+J(a,b,c)=3 \times ( a + b \times c )
+\label{Eq:7}
+\end{equation}
+
+If $u = b \times c $, $v = a + v $, then finally the output $J = 3 \times v$ as shown in figure.~\ref{fig:GG}. Sometimes, $J$ is the cost function that we are trying to optimize. Through a left-to-right pause we can compute the value of $J$. When we are computing derivatives, it is a right-to-left pause. As we know before, in Calculus it actually called the chain rule which is the step of backward calculation. When you're writting codes to implement backpropagation, there usually be some fianl output variable that you really care about or you want to optimize. So in code we use in Eq.~\ref{Eq:8}
+\begin{equation}
+dvar = \frac{\partial FindOutput}{\partial var}
+\label{Eq:8}
+\end{equation} to represent the derivative of the final output variable we care about such as $J$ sometimes the last $L$ with respect to the various intermediate quantities we're computing in code. This is same to the other variables such as $\frac{\partial J}{\partial u}$=$\frac{\partial J}{\partial v} \frac{\partial v}{\partial u}$, $\frac{\partial J}{\partial b}$=$\frac{\partial J}{\partial u} \frac{\partial u}{\partial b}$ and $\frac{\partial J}{\partial c}$=$\frac{\partial J}{\partial u} \frac{\partial u}{\partial c}$.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{ComputingDerivative.png}
+\end{center}
+   \caption{Gradient Graph}
+\label{fig:GG}
+\end{figure}
+
+
+\subsection{Logistic Regression Gradient Descent}
+This subsection is about how to implement gradient descent for logistic regression. Recap of logistic regression as follow Eq.~\ref{Eq:9}\ref{Eq:10}\ref{Eq:11}.
+\begin{equation}
+z=\omega^Tx+b
+\label{Eq:9}
+\end{equation}\par
+$\hat{y}$ is defined as follows, where $z$ is that and if we focus on just one example,then the loss or respect to that one example is defined as follows, where $a$ is the output of the logistic regression and $y$ is the ground truth label
+\begin{equation}
+\hat{y}=a=\sigma(z)
+\label{Eq:10}
+\end{equation}
+\begin{equation}
+L(a,y)=-(y\log(a)+(1-y)\log(1-a))
+\label{Eq:11}
+\end{equation}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{ReLR.png}
+\end{center}
+   \caption{Gradient Graph}
+\label{fig:ReLR}
+\end{figure}
+
+Another example as figure.~\ref{fig:ReLR}, we have only two features $x_1$ and $x_2$, in order to compute $z$, we need to input $\omega_1$, $\omega_2$ and $b$, in addition to the feature values $x_1$ $x_2$. So these things in a computation graph get used to compute $z$. Finally we compute $L(a,y)$. In logistic regression what we want to do is to modify the parameters $\omega$ and $b$ in order to reduce the loss.\par
+If we want to compute derivatives represent to this loss, the first thing we want to do about going backwards is to compute the derivative of this loss with  represent to this variable $a$ while in code use $da$ to denote this variable in Eq.~\ref{Eq:12}. 
+\begin{equation}
+da=\frac{\partial L(a,y)}{\partial a}=-\frac{y}{a}+\frac{1-y}{1-a}
+\label{Eq:12}
+\end{equation}\par
+We can compute $d z$, $d \omega_1$, $d \omega_2$ and $d b$ using the same method as Eq:~\ref{Eq:13}\ref{Eq:14}\ref{Eq:15}\ref{Eq:16}
+\begin{equation}
+d \omega_1=\frac{\partial L}{\partial \omega_1}=a-y
+\label{Eq:13}
+\end{equation}
+\begin{equation}
+d \omega_1=\frac{\partial L}{\partial \omega_1}=x_1 \times dz
+\label{Eq:14}
+\end{equation}
+\begin{equation}
+d \omega_2=\frac{\partial L}{\partial \omega_2}=x_2 \times dz
+\label{Eq:15}
+\end{equation}
+\begin{equation}
+db=dz
+\label{Eq:16}
+\end{equation}\par
+If we do it for m training examples, the definition of cost function $J(\omega,b)$ is this average 
+\begin{equation}
+J(\omega,b)=\frac{1}{m}\sum_{i=1}^m L(a^{(i)},y^{(i)})
+\label{Eq:17}
+\end{equation}
+\begin{equation}
+a^{(i)}=\hat{y}^{(i)}=\sigma(z^{(i)})=\sigma(\omega^Tx^{(i)}+b)
+\label{Eq:18}
+\end{equation}\par
+It turns out that the overall cost function with the sum was really the average of the 1 over m term of the individual losses like Eq.~\ref{Eq:17}\ref{Eq:18}. The derivative respect to say $\omega_1$ of the overall cost function is also going to be the average of derivatives respect to $\omega_1$ of the individual loss terms like~\ref{Eq:19}
+\begin{equation}
+\frac{\partial J(\omega,b)}{\partial \omega_1}=\frac{1}{m} \sum_{i=1}^m \frac{\partial L(a^{(i)},y^{(i)})}{\partial \omega_1}
+\label{Eq:19}
+\end{equation}\par
+Initialize $J$ equals 0, $d \omega_1$ equals 0, $\omega_2$ equals 0 and $d b$ equals 0. Use a for loop over the training set and compute the derivatives to respect each training example and then add them up all right like figure.~\ref{fig:ME}. In this code, we use $d \omega_1$ and $d \omega_2$ as accumulators to sum over the entire training set whereas in contrust $d z_{(i)}$ is with respect to just one single training example, a superscript $i$ refer to the one training example that's computed on. The result is in figure.~\ref{fig:ME-1}. 
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Mexamples.png}
+\end{center}
+   \caption{Logistic Regression on $m$ Examples}
+\label{fig:ME}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{ME-1.png}
+\end{center}
+   \caption{Logistic Regression on $m$ Examples}
+\label{fig:ME-1}
+\end{figure}
+
+\begin{figure}
+\begin{minipage}[t]{0.5\linewidth}
+\centering
+\includegraphics[width=2.5in]{Mexamples.png}
+%\caption{Structured data~\cite{Coursera.org}}
+\label{fig:Mexamples}
+\end{minipage}%
+\begin{minipage}[t]{0.5\linewidth}
+\centering
+\includegraphics[width=2.62in]{ME-1.png}
+%\caption{Unstructured data~\cite{Coursera.org}}
+\label{fig:ME-1}
+\end{minipage}
+\end{figure}
+
+There are two weeknesses with the calculation as with implements.
+\begin{itemize}
+\item There are 2 for-loop:one is a small loop over the $m$ training examples and the second for loop is  over all $n$ features.
+\item When implementing deep learning algorithms, having explicit for loop in code makes your algorithm run less efficiency.
+\end{itemize} 
+
+
+\subsection{Vectorization}
+Vectorization is basically getting rid of explicit for loops in code. In practice of deep learning we need to train on relatively large data sets when deep learning algorithms tend to be shine. Therefore, the ability to perform vectorization have become a key skill. The non-vectorized implementation is in figure.~\ref{fig:ME}. In contrast, a vectorized implementation in Python would just use the command as follow
+\begin{equation}
+z=np.dot(\omega,x)+b
+\label{Eq:CMD}
+\end{equation}\par
+The approach~\ref{Eq:CMD} is much faster. It demonstrates that if you vectorize your code, it will be much faster. A lot of scaleable deep learning implementations are done on a GPU(Graphic Processing Unit). It turns out that both CPU and GPU have parallelizaiton instructions(sometimes called SIMD instructions) which stands for a single instruction multiple data.\par
+If you use build-in functions such as $np.functions$ that don't require you exolicitly implementing a for loop. It enables Python numpy to take much better advantage of parallelism to do computations much faster. GPU is remarkably good at these SIMD calculations  but CPU is actually also not too bad at that. The rule of thumb to remember is whenever possible, avoiding using explicit for-loops.\par
+%%%2.12
+
+
+\subsection{Vectorizing Logistic Regression}
+This part is about how we can vectorize the implementation of logistic regression, so they can process an entire training set that is implement a single iteration of gradient descent with respect to an entire training set without using even a single explicit for-loop. In order to carry out the forward propagation step as shown in figure.~\ref{fig:Forward}, it is necessary to compute these predictions on m training examples. There is a way to do so without needing an explicit for-loop.\par
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Forward.png}
+\end{center}
+   \caption{The forward propagation steps of logistic regression}
+\label{fig:Forward}
+\end{figure}
+
+\subsection{Vectorizing Logistic Regression's Gradient Computation}
+\begin{equation}
+db=\frac{1}{m}\sum^m_{i=1}dz^{(i)}
+\label{Eq:21}
+\end{equation}
+\begin{equation}
+dw=\frac{1}{m}Xdw^T
+\label{Eq:22}
+\end{equation}
+In Python Eq.~\ref{Eq:21} is $db=\frac{1}{m} np.sum(dz)$ and so on.\par
+When implementing logistic regression, instead of looping over these, we can write them as \par
+$Z=W^T+b$ in Python $Z=np.dot(W.T,x)+b$ \quad $A=\sigma(Z)$ \quad $dZ=A-y$ \quad $dw=\frac{1}{m}XsZ^T$ \quad $db=\frac{1}{m}np.sum(dZ)$, these are backward propagation.\par
+We should get rid of explicit for-loops, if you want to implement multiple as a gradient descent then you still need a for-loop over the number of iterations.
+
+
+\subsection{Broadcasting in Python}
+Broadcasting is another technique that make Python code run faster. If we had a 3 $\times$ 4 matrix and we divided it by a 1$\times$ 4 matrix. What Python will do is taking this number and auto-expand it in a 3$\times$ 4 vector then the matrix can be computed. In a word, there is a general principle in Python as shown in figure.~\ref{fig:Principle}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{GeneralPrinciple.png}
+\end{center}
+   \caption{General Principle in Python}
+\label{fig:Principle}
+\end{figure}
+
+
+\subsection{Python/numpy vector}
+$a=np.random.randn(5)$, its shape is $(5,)$ which is called a rank 1 array. It doesn't behave consistently as either a row vector nor a colimn vector. When doing programming exercises or implementing logistic regression on neural networks that we should not use these rank i arrays. Instead, when creating an array, we commit to making it either a column vector or a row vector as we can see in figure.~\ref{fig:vectors}. If not entirely sure what's the dimension of one of vectors, We could throw in an assertion statement like $a.assert(a,shape==(5,1))$ to make sure that this is a vector in this case. And if for some reason you end up with a rank 1 array, you can reshape this like $a=a.reshape(1,5)$ so that it behaves more consistently as either column vector or row vector.
+
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{vectors.png}
+\end{center}
+   \caption{Python/numpy vectors}
+\label{fig:vectors}
+\end{figure}
 
 \section{Progress in this week}
 
@@ -92,9 +310,9 @@ Organized the content and push to the github.
 \end{tabular}
 
 \begin{description}
-    \item[\normalfont 2018.07.08---2018.05.14] Watch the rest of week two course clips and take the note.
-    \item[\normalfont 2018.07.15---2018.07.21] Do so on week three course.
-    \item[\normalfont 2018.05.22---2018.05.38] Do so on week tfour course.
+    \item[\normalfont 2018.07.15---2018.07.21] Watch week three course clips and take the note.
+    \item[\normalfont 2018.07.22---2018.07.28] Do so on week four course.
+    \item[\normalfont 2018.08.29---2018.08.04] Do so on next part course.
 \end{description}
 
 % If you don't cite any references, please comment the following two lines
