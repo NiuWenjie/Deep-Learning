@@ -1,0 +1,364 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{outline} 
+\usepackage{pmgraph} 
+\usepackage[normalem]{ulem}
+\usepackage{verbatim}
+% \usepackage{minted} % need `-shell-escape' argument for local compile
+
+\title{
+    \vspace*{1in}
+    \includegraphics[width=2.75in]{zhenglab-logo.png} \\
+    \vspace*{1.2in}
+    \textbf{\huge Weekly Work Report}
+    \vspace{0.2in}
+}
+
+\author{Wenjie Niu \\
+    \vspace*{0.5in} \\
+    \textbf{VISION@OUC} \\
+    \vspace*{1in}
+}
+
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\newpage
+
+
+\section{Content}
+This week, I start the learning of shallow neural network. The main stucture is the following.
+\subsection{Neural Network Presentation}
+Like Figure.~\ref{fig:Logisti}, the neural network is figure.~\ref{fig:NeuralNetwork}. There are the input features $x_1 x_2 x_3 x_4$ stacked  vertically, which is called the input layer of the neural network. In the middle, this is called hidden layer of the neural network, but the final layer here is called output layer, which is responsible for generating the predicted value $\hat{y}$. The term hidden layer refers to the fact that in a training set the values for these nodes in the middle are not observed that you don't see what they should be in the training set. The other denotion of input features is $a^{[0]}$， and the term $a$ also stands for activitions refering to the values that different layers of the neural network are passing on to the subsequent layers. So the input layer passes on the value $x$ to the hidden layer. The hidden layer and the output layers will have parameters, the hidden layer will have associated with their parameters $w$ and $b$. Similarly, the output layer has associated with parameters $w^{[2]}$ and $b^{[2]}$.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{LogisticRegression.png}
+\end{center}
+   \caption{Logistic Regression~\cite{mooc.com,Coursera.org}}
+\label{fig:Logisti}
+\end{figure}
+
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{NeuralNetwork.png}
+\end{center}
+   \caption{Neural Network Model~\cite{mooc.com,Coursera.org}}
+\label{fig:NeuralNetwork}
+\end{figure}
+
+
+\subsection{Computing a Neural Network}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{LogisticRegression1.png}
+\end{center}
+   \caption{Logistic Regression Detail~\cite{mooc.com,Coursera.org}}
+\label{fig:detail}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{NeuralNetworkRepresentation.png}
+\end{center}
+   \caption{Neural Network Representation~\cite{mooc.com,Coursera.org}}
+\label{fig:Representation}
+\end{figure}
+
+In the figure.~\ref{fig:detail}, the circle images the regression really represent two steps of computation. First compute $z$ as follows and in second compute the activation as a sigmoid function of $z$. Neural network just does this a lot more times. Vectorizing the equtions in figure.~\ref{fig:Representation}, it becomes to 
+\begin{equation}
+Z^{[1]}=W^{[1]}X+b^{[1]}
+\end{equation}
+\begin{equation}
+a^{[1]}=\sigma(Z^{[1]})
+\end{equation}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.25\linewidth]{learning.png}
+\end{center}
+   \caption{Neural Network Representation Learning~\cite{mooc.com,Coursera.org}}
+\label{fig:learning}
+\end{figure}
+
+When having a nueral network who have one hidden layer, we need to compute the four equations in figure.~\ref{fig:learning}, and it can be seen as a vectorized implementation of computing the output of first four logistic regression units in a hidden layer.
+
+
+\subsection{Explaination for vectorized implementation}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Vectorizedimplementation.png}
+\end{center}
+   \caption{Justification for vectorized implementation~\cite{mooc.com,Coursera.org}}
+\label{fig:Vectorizedimplementation}
+\end{figure}
+
+The figure.~\ref{fig:Vectorizedimplementation} justifies why $Z^{[1]}=W^{[1]}X+b^{[1]}$. That's a correct vectorization of the first step of the four steps.
+
+\subsection{Activation functions}
+In the forward propagation steps for the neural network we have these two steps where we use $\sigma$ function, so that $\sigma$ is called an activation function as shown int figure.~\ref{fig:ActivationFunctions}. In the more general case we ca have a different function $g(z)$ where $g$ could be a nonlinear function that  may not be the $\sigma$ function. The tanh function or the hyperbolic tangent  function is as shown in figure.~\ref{fig:ActivationFunctions}. Using $\sigma$ it makes sense for $\hat{y}$ to be a number that thr output is between 0 and 1 rather than between -1 and 1. The one exception where the $\sigma$ activation function is used is when using binary classification in which case you might use the $\sigma$ activation function for the output layer. The activation functions can be different for different layers. Now one of the downsides of both the $\sigma$ function and the tanh function is that if $z$ is either very large or very small then the gradient of the derivative or the slope of this function becomes very small being close to 0. Another popular function is rectified linear unit(ReLU) and the ReLU function looks like as shown in figure.~\ref{fig:ActivationFunctions} and the formula is $a=max(0,z)$. So the derivative is 1 so long as $z$ is positive and derivative or the slope is 0 when $z$ is negative. While the derivative when $z$ is exactly 0 is not well-defined, but you could pretend a derivative either 1 or 0 when $z=0$. One disadvantage of the ReLU is that the derivative is equal to 0 when $z$ is negative. There is another version of the ReLU called the leaky ReLU as shown in figure.~\ref{fig:ActivationFunctions}, instead of it being 0 when $x$ is negative. It takes a slight slope like so this is called the Leaky ReLU.\par
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{ActivationFunctions.png}
+\end{center}
+   \caption{Pros and cons of activation functions~\cite{mooc.com,Coursera.org}}
+\label{fig:ActivationFunctions}
+\end{figure}
+
+
+\subsection{Derivatives of Activation functions}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{SigmoidActivationFunction.png}
+\end{center}
+   \caption{Sigmoid Activation Function~\cite{mooc.com,Coursera.org}}
+\label{fig:SigmoidActivationFunction}
+\end{figure}
+
+As shown in figure.~\ref{fig:SigmoidActivationFunction} then the slope of the function is 
+\begin{equation}
+\frac{d}{dz}g(z)=g(z)(1-g(z))
+\label{Eq:3}
+\end{equation}
+First if $z$ is very large, then $g(z)$ will be close to 1,the equation.~\ref{Eq:3} is equal to 0 and the slope is close to 0. Conversely, if $z$ is very small, then $g(z)$ is close to 0  and the equation.~\ref{Eq:3} will be close to 0. Finally at $z=0$ then $g(z)$ is euqal to $\frac{1}{2}$ so the derivative is equal to $\frac{1}{4}$.\par
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{TanhActivationFunction.png}
+\end{center}
+   \caption{Tanh Activation Function~\cite{mooc.com,Coursera.org}}
+\label{fig:TanhActivationFunction}
+\end{figure}
+
+As shown in figure.~\ref{fig:TanhActivationFunction} then the slope of the function is 
+\begin{equation}
+\frac{d}{dz}g(z)=1-(tanh(z))^2
+\end{equation}
+If $z=10$, then $tanh(z)=1$ while $g^{'}(z)=0$; If $z=-10$, then $tanh=-1$ while $g^{'}(z)=0$; If $z=0$, then $tanh=$ while $g^{'}(z)=1$;.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.25\linewidth]{RELU.png}
+\end{center}
+   \caption{ReLU Activation Function~\cite{mooc.com,Coursera.org}}
+\label{fig:ReLU-1}
+\end{figure}
+
+As shown in figure.~\ref{fig:ReLU-1} then the slope of the function is
+\begin{equation}
+g^{'}(z)=
+\begin{cases}
+0,\quad if \quad z<0\\
+1,\quad if \quad z>0\\
+undefined,\quad if \quad z=0.
+\end{cases}
+\end{equation}
+It doesn't matter you could set the derivative to be equal to when $z=0$.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.25\linewidth]{LeakyReLU.png}
+\end{center}
+   \caption{Leaky ReLU Activation Function~\cite{mooc.com,Coursera.org}}
+\label{fig:LeakyReLU}
+\end{figure}
+
+As shown in figure.~\ref{fig:LeakyReLU}  $g(z)=max(0.0iz,z)$ then the slope of the function is
+\begin{equation}
+g^{'}(z)=
+\begin{cases}
+0.01,\quad if \quad z<0\\
+1,\quad if \quad z>0\\
+undefined,\quad if \quad z=0.
+\end{cases}
+\end{equation}
+
+
+\subsection{Gradient Descent for Neural Networks}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{GradientDescent-2.png}
+\end{center}
+   \caption{Gradient Descent for Neural Networks~\cite{mooc.com,Coursera.org}}
+\label{fig:GD-2}
+\end{figure}
+
+The figure.~\ref{fig:GD-2} is one iteration of gradient descent and then you are repeating this some number of times until your parameters look like they're converging.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{GradientDescent-3.png}
+\end{center}
+   \caption{Formulas for Computing Derivatives~\cite{mooc.com,Coursera.org}}
+\label{fig:GD-3}
+\end{figure}
+
+There are forward and backward propagation equations in figure.~\ref{fig:GD-3}.
+
+
+\subsection{Random Initialization}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{ANeuralNetwork.png}
+\end{center}
+   \caption{A Neural Network~\cite{mooc.com,Coursera.org}}
+\label{fig:ANN}
+\end{figure}
+
+Technically I'm assuming that the outging weights and bias are identical to 0. If initializing the neural network this way, the hidden units are completely indentical so they're completely symmetric which means that the computing exactly the same function. Then after one iteration that the same statement is still true, the two hidden units are still symmetric. So in this case there's really no point to having more than one hidden unit. The solution to this is to initialize your parameters randomly. We can set $W^{[1]}=np.randome.randn((2,2))$*0.01 so initialize it to very small random values. Initialize $b^{[1]}=np.zeros((2,1))$ so long as $W$ is initialized randomly. Then similarly for $W^{[2]}$ and so on.
+
+
+\subsection{Deep L-layer Neural Network}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{DeepNeuralNetwork.png}
+\end{center}
+   \caption{Neural Networks~\cite{mooc.com,Coursera.org}}
+\label{fig:NNS}
+\end{figure}
+
+Shallow versus depth is a matter of degree. Technically logistic regression is a one layer neural network. The shallow and deep neural network is as shown in figure,~\ref{fig:NNS}.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{DNNNotation.png}
+\end{center}
+   \caption{Deep Neural Network Notation~\cite{mooc.com,Coursera.org}}
+\label{fig:DNNNotation}
+\end{figure}
+
+Here is a four layer neural network with 3 hidden layers as shown in figure.~\ref{fig:DNNNotation} and the number fo units in these hidden layers are 5,5,3 then there's one output unit.
+
+
+\subsection{Forward Propagation in a Neural Network}
+Given a single training example $x$ here's how you can compute the activations of the first layer so for the first layer we compute $Z^{[1]}=W^{[1]}X+b^{[1]}$ which $W^{[1]}$ and $b^{[1]}$ are parameters that affect the activations in layer 1 of neural network and then we compute the activations for $a^{[1]}=g^{[1]}(Z^{[1]})$. So if you do thatt you've now computed the activations from layer 1. Similarly to layer 2 and so on. $X$ here is equals to $a^{[0]}$, in a word $z^{[l]}=W^{[l]}a^{[l-1]}+b^{[l]}$, $a^{[l]}=g^{[l](z^{[l]})}$. That's the general forward propagation equations. After vectorization, the equations become $Z^{[l]}=W^{[l]}A^{[l-1]}+b^{[l]}$, $A^{[l]}=g^{[l](Z^{[l]})}$
+
+
+\subsection{Getting Your Matrix Dimensions Right}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Db.png}
+\end{center}
+   \caption{Decide parameters $W^{[l]}$ and $b^{[l]}$~\cite{mooc.com,Coursera.org}}
+\label{fig:Db}
+\end{figure}
+
+If you meet the neural network like figure.~\ref{fig:Db}, the general formula to check $W^{[l]}$ is that when we're implementing the metrix for a layer $l$ to the dimension of that matrix will be $(n^{[l]},n^{[l-1]})$ while $b^{[l]}$ is $(n^{[l]},1)$. If implementing back propagation then the deimention of $dW$ should be the same as dimension of $W$ so $dW$ is $(n^{[l]},n^{[l-1]})$ and $db$ should be the same dimension as $b$ so $db$ is $(n^{[l]},1)$.\par
+When forward propagation, the dimension of $Z^{[1]}$ and $a^{[1]}$ is $(n^{[l]},1)$, after vectorized is $(n^{[l]},m)$. When  implementing backward propagation, the dimensions is the same as forward propagation. So make sure that all the matrices dimensions are consistent.
+
+
+\subsection{Forward and backward Propagation}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{ForwardP.png}
+\end{center}
+   \caption{Forward Propagation for Layer $l$~\cite{mooc.com,Coursera.org}}
+\label{fig:ForwardP}
+\end{figure}
+ 
+The procedure of forward propagation is in figure.~\ref{fig:ForwardP} from left to right. The procedure of backward propagation is in figure.~\ref{fig:BackwardP}.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{BackwardP.png}
+\end{center}
+   \caption{Backward Propagation for Layer $l$~\cite{mooc.com,Coursera.org}}
+\label{fig:BackwardP}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Summary.png}
+\end{center}
+   \caption{Summarize the procedure~\cite{mooc.com,Coursera.org}}
+\label{fig:Summary}
+\end{figure}
+
+Summarize all the procedure of forward and backward propagation is in figure.~\ref{fig:Summary}.
+
+
+\subsection{Parameters vs Hyperparameters}
+Being effective in developing your deep neural nets requires that not only orgnized parameters well but also hyperparameters.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Parameters-Hyperparameters.png}
+\end{center}
+   \caption{Parameters and Hyperparameters~\cite{mooc.com,Coursera.org}}
+\label{fig:PH}
+\end{figure}
+
+All of the things are that you need to tell the learning algorithm and so these parameters that control the ultimate parameters $W$ and $b$ so we call all of these things below hyper parameters. Because it is the hyper parameters that somehow determine the final value of the parameters $W$ and $b$ that we end up with. In fact, deep learning has a lot of different hyper parameters like Momentum, minibatch size and so on.
+
+
+\subsection{Train/dev/test sets}
+From now, the part 2 course begins. We'll learn the pratical aspects of how to make neural network work well ranging from things like hyperparameter tuning to how to set up data to how to make sure optimization algorithm runs quickly so that get the learning algorithm to learn in a reasonable time. In the first week, it about the cellular machine learning problem, then about randomization and about some tricks for making neural network implementation is correct. When training a neural network we have to make a lot of decisions such as how many layers will your neural network have and so on as shown in figure.~\ref{fig:Decisions}.
+
+\begin{figure}[!htp]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{Decisions.png}
+\end{center}
+   \caption{Many decisions should be made~\cite{mooc.com,Coursera.org}}
+\label{fig:Decisions}
+\end{figure}
+
+
+\section{Progress in this week}
+
+\begin{description}
+\item [Step 1]
+Watched the courses clips.
+\item[Step 2]
+Wathced again and took notes.
+\item[Step 3]
+Grasped the related pictures and wrote the Latex.
+\item[Step 4]
+Organized the content and push to the github.
+\end{description}
+
+
+\section{Plan}
+
+\begin{tabular}{rl}
+	\textbf{Objective:} & Learn Neural Network and Deep Learning by myself. \\
+    %\textbf{Deadline:} & XXXX 
+\end{tabular}
+
+\begin{description}
+    \item[\normalfont 2018.07.22---2018.07.28] Watch Part 2 course clips and take the note.
+    \item[\normalfont 2018.07.29---2018.08.04] Do so on week four course.
+    \item[\normalfont 2018.08.05---2018.08.11] Do so on next part course.
+\end{description}
+
+% If you don't cite any references, please comment the following two lines
+\bibliographystyle{ieee}
+\bibliography{WeekThree}
+
+\end{document}
