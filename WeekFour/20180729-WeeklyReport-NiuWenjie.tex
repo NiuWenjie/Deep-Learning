@@ -1,0 +1,222 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+\usepackage{outline} \usepackage{pmgraph} \usepackage[normalem]{ulem}
+\usepackage{graphicx} \usepackage{verbatim}
+% \usepackage{minted} % need `-shell-escape' argument for local compile
+
+\title{
+    \vspace*{1in}
+    \includegraphics[width=2.75in]{zhenglab-logo.png} \\
+    \vspace*{1.2in}
+    \textbf{\huge Weekly Work Report}
+    \vspace{0.2in}
+}
+
+\author{Wenjie Niu \\
+    \vspace*{0.5in} \\
+    \textbf{VISION@OUC} \\
+    \vspace*{1in}
+}
+
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\newpage
+
+
+\section{Progress in this week}
+
+List what you have done in this week in detail.
+
+For example, maybe you performed some experiments this week. The following are the steps you took:
+
+\begin{description}
+\item [July 23]\par
+I succeeded in configuring the PyTorch environment after the meeting we had.
+\item[July 24]\par
+ I finished the Pytorch all introductory tutorials except the tutorials using GPU from~\cite{Pytorch} which includes the basic instruments and programming. And I learned the method of constructing a neural network and related knowledge such as loss function, forward and back propagation and  updating weight. Most important of all is how to train a classfier. The steps of it are as following
+ \begin{itemize}
+ 	\item Loadding and normalizing CIFAR10(a dataset)
+ 	\item Define a Convolution Neural Network
+ 	\item Define a Loss function and optimizer
+ 	\item Train the network
+ 	\item Test the network on the test data
+ \end{itemize}
+\item[July 25]\par
+I solved the rest problems from the PyTorch tutorials in the morning, and there are still some concrete concepts not being understood, which may need a lot of practice in the follow-up work to understand.
+In the afternoon I decide the structure of implementing to train MNIST only with FC layers. Most of the programming is finished excpt 3D presentation as~\ref{fig:Figure_2}\ref{fig:Figure_2-1}\ref{fig:Figure_2-2}. The effect is in figure.~\ref{fig:traindata}\ref{fig:Output1}.\par
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{traindata.png}
+	\end{center}
+	\caption{Plot one example's figure.}
+	\label{fig:traindata}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Output1.png}
+	\end{center}
+	\caption{Plot one example's size.}
+	\label{fig:Output1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_1.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_1-1.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_1-1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_1-2.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_1-2}
+\end{figure}
+
+As we can see in figure.~\ref{fig:Figure_1}\ref{fig:Figure_1-1}\ref{fig:Figure_1-2}, the output is not quite the same with input especially 3 and 5, 4 and 9. So the effect is not satisfying. Therefore, it needs to be modified.\par
+\item[July 26]\par
+The entire program of training MNIST with FC layers is finished. The last step of 3D view is shown in figure.~\ref{fig:Figure_2}\ref{fig:Figure_2-1}\ref{fig:Figure_2-2}. Like the result shown in figure.~\ref*{fig:Figure_1}\ref{fig:Figure_1-1}\ref{fig:Figure_1-2}, the vague paired numbers is exactly coherent. Then I want to modify it with Convulutional layers to present more robust effect.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_2.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_2}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_2-1.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_2-1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure_2-2.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure_2-2}
+\end{figure}\par
+
+The program with convolutional layers performs better than FC layers only.What as shown in figure.~\ref{fig:Figure3_1}  difficult for me is that the contigeous layers need to be matching to each other in dimension and pixel. The other problem is that the procedure of decoder. It is necessary that the procedure need to deconvolution and unpool if we use convolution and pooling in the procedure of encoder. The effect is as following
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{Figure3_1.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:Figure3_1}
+\end{figure}\par
+
+It is easy to find that the generative figures is much better and more clear than in model of FC layers.\par
+
+\item[July 27]
+Today I begin to train a GAN model using MINIST dataset to generate analogous figures. The code are some error during the procedure of running. The generative figures are as shown in figure.~\ref*{fig:10000}\ref{fig:60000}\ref{fig:120000}\ref{fig:182000}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{10000.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:10000}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{60000.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:60000}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{120000.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:120000}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{182000.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:182000}
+\end{figure}
+
+\item[July 28]The code of GAN are still in running.But the computer constraints the speed of programming so as to it is not completed on July 28. The figures GAN produced is on July 27's report. I try train dataset using DCGAN, there are many errors as well.
+
+\item[July 29]
+I train dataset using DCGAN and GAN at the same time. It also need a lot time of the whole day to run the code.The results is as following~\ref{fig:GAN_epoch010}\ref{fig:GAN_epoch020}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{GAN_epoch010.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:GAN_epoch010}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=0.3\linewidth]{GAN_epoch020.png}
+	\end{center}
+	\caption{Some ouput figures during the epoches.}
+	\label{fig:GAN_epoch020}
+\end{figure}
+
+As shown in figures above, it is easy to figure out that the effect is quite different between different structures. And the order from better to worse is DCGAN, GAN , Auto-Encoder of CNN, Auto-Encoder of FC.
+
+\end{description}
+
+
+
+\section{Plan}
+
+\begin{tabular}{rl}
+	\textbf{Objective:} & Run the code of DEPAN and modify it to satisfy the article of TPAMI. \\
+    \textbf{Deadline:} & 2018.11.11
+\end{tabular}
+
+\begin{description}
+    \item[\normalfont 2018.07.30---2018.08.05] Run the code of Pix2Pix and DEPAN comletely and understand what is the meaning of it.
+    \item[\normalfont 2018.08.06---2018.08.19] According to the requirement, it is necessary to modify the code and run correctly.
+    \item[\normalfont 2018.08.20---2018.08.26] Then add the extra experiment to the article and so on.
+\end{description}
+
+% If you don't cite any references, please comment the following two lines
+\bibliographystyle{ieee}
+\bibliography{WeekFour.bib}
+
+\end{document}
