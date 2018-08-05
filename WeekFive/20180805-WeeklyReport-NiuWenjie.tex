@@ -1,0 +1,158 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{outline} \usepackage{pmgraph} \usepackage[normalem]{ulem}
+\usepackage{graphicx} \usepackage{verbatim}
+% \usepackage{minted} % need `-shell-escape' argument for local compile
+
+\title{
+    \vspace*{1in}
+    \includegraphics[width=2.75in]{zhenglab-logo.png} \\
+    \vspace*{1.2in}
+    \textbf{\huge Weekly Work Report}
+    \vspace{0.2in}
+}
+
+\author{Wenjie Niu \\
+    \vspace*{0.5in} \\
+    \textbf{VISION@OUC} \\
+    \vspace*{1in}
+}
+
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\newpage
+
+
+\section{Research problem}
+
+Understand the paper and run the code of \emph{Image-to-Image Translation Using Conditional Adversarial Networks( pix2pix )}~\cite{pix2pix}. Understand the paper of \emph{Discriminative Region Proposal Adversarial Networks for High-Quality Image-to-Image Translation( DRPAN )}~\cite{Wang2017Discriminative} correcly.\par
+
+\section{Research approach}
+
+Firstly, read the paper of pix2pix, then run the code of it to have an intimate knowledge of the origin model, which be explored in DRPAN. Later, read the paper of DRPAN again for running the its code and expansion of the experiments.\par
+
+\section{Research progress}
+
+Finished the Pytorch all introductory tutorials, which includes the basic instruments and programming. Learned the method of constructing a neural network and related knowledge such as loss function, forward and back propagation, updating weight and how to train a classfier. Then use the network of Auto-Encoder to train MNIST with FC layers and CNN layers seperately. Finally, train it with GAN and DCGAN.
+
+\section{Progress in this week}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{facades_pix2pix_images.png}
+	\end{center}
+	\caption{The output of training in the dataset of facades.}
+	\label{fig:facades_pix2pix_1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{Unet.png}
+	\end{center}
+	\caption{The architecture of generator}
+	\label{fig:Unet}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{Results1.png}
+	\end{center}
+	\caption{The output of test dataset.}
+	\label{fig:Results1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{Results2.png}
+	\end{center}
+	\caption{The output of test dataset.}
+	\label{fig:Results2}
+	\end{figure}
+	
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{In1.png}
+	\end{center}
+	\caption{The intermediate results.}
+	\label{fig:In1}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{In2.png}
+	\end{center}
+	\caption{The intermediate results.}
+	\label{fig:In2}
+\end{figure}
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[width=1 \linewidth]{CGAN.png}
+	\end{center}
+	\caption{Training a conditional GAN to map edges$\rightarrow$photo. The discriminator, D, learns to classify between fake (synthesized by the generator) and real \{edge, photo\} tuples. The generator, G, learns to fool the discriminator. Unlike an unconditional GAN, both the generator and discriminator observe the input edge map.}
+	\label{fig:CGAN}
+\end{figure}
+
+\begin{description}
+\item [Step 1]
+Read and try to understand the paper of Image-to-Image Translation Using Conditional Adversarial Networks( pix2pix ) and some blogs to help with mastering its structure. The architecture of generator is using a U-net as shown in figure~\ref{fig:Unet}. Two choices for the architecture of the generator. The
+“U-Net” is an encoder-decoder with skip connections between mirrored layers in the encoder and decoder stacks. While the discriminator use a convolutional ``PatchGAN" classifier. They adapt our generator and discriminator architectures from those in~\cite{Radford2016Unsupervised}. Both generator and discriminator use modules of the form convolution-BatchNorm-ReLu~\cite{Ioffe2015Batch}.
+\item[Step 2]
+Run the code of pix2pix with the dataset of facades, the train output is shown in figure.~\ref{fig:facades_pix2pix_1} and the test output is as shown in figure~\ref{fig:Results1}~\ref{fig:Results2}. The intermediate results are as shown in figure~\ref{fig:In1}~\ref{fig:In2}.
+\item[Step 3]
+ At the same time, I try to configuration environment and use GPU to run codes and imitate the basic command on GPU which is really hard to handle for myself.
+\item[Step 4]
+Read the paper of DRPAN again and again to understand its architecture and master its code for the further work in next week. Practice some examples in Python to enhance the knowledge of this programming language.
+\end{description}
+
+There are some differences between GANs and conditional GANs. GANs are generative models that learn a mapping from random noise vector $z$ to output image $y$, $G:z\rightarrow y$~\cite{Goodfellow2014Generative}. In contrast, conditional GANs learn a mapping from observed image $x$ and random noise vector $z$, to $y$, $G:\{x,z\}\rightarrow y$. The generator G is trained to produce outputs that cannot be distinguished from ``real" images by an adversarially trained discriminator, D, which is trained to do as well as possible at detecting the generator’s “fakes”. This training procedure is diagrammed in Figure~\ref{fig:CGAN}.\par
+The objective of a conditional GAN can be expressed as
+\begin{equation}
+\mathcal{L}_{cGAN}(G,D)=\mathbb{E}_{x,y}[\log D(x,y)]+\mathbb{E}_{x,z}[\log(1-D(x,G(x,z)))]
+\end{equation} 
+where G tries to minimize this objective against an adversarial D that tries to maximize it, \emph{i.e.} $G^*=\arg min_G max_D \mathcal{L}_{cGAN}(G,D)$.\par
+To test the importance of conditioning the discriminator, it's also be compared to an unconditional variant in which the discriminator does not observe $x$:
+\begin{equation}
+\mathcal{L}_{GAN}(G,D)=\mathbb{E}_y[\log D(y)]+\mathbb{E}_{x,z}[\log(1-D(G(x,z)))]
+\end{equation}
+Previous approaches have found it beneficial to mix the GAN objective with a more traditional loss, such as L2 distance. The discriminator’s job remains unchanged, but the generator is tasked to not only fool the discriminator but also to be near the ground truth output in an L2 sense. It's also explored this option, using L1 distance rather than L2 as L1 encourages less blurring:
+\begin{equation}
+\mathcal{L}_{L_1}(G)=\mathbb{E}_{x,y,z}[\lVert y-G(x,z)\rVert_1]
+\end{equation}
+The final objective is
+\begin{equation}
+G^*=\arg \min_{G} \max_{D} \mathcal{L}_{cGAN}(G,D)+\lambda \mathcal{L}_{L_1}(G)
+\end{equation}\par
+Conditional adversarial networks are a promising approach for many image-to-image translation tasks, especially those involving highly structured graphical outputs. These networks learn a loss adapted to the task and data at hand, which makes them applicable in a wide variety of settings.\par
+
+\section{Plan}
+
+\begin{tabular}{rl}
+	\textbf{Objective:} & Run the code of DRPAN then expand it. And modify the experiments to satisfy the article of TPAMI. \\
+    \textbf{Deadline:} & 2018.11.11 
+\end{tabular}
+
+\begin{description}
+    \item[\normalfont 2018.08.06---2018.08.12] Understand and run the code of DRPAN correctly.
+    \item[\normalfont 2018.08.13---2018.08.19] Based on the origin code, expand the extra experiments.
+    \item[\normalfont 2018.08.20---2018.08.26] Modify these experiments to satisfy the requirements in article.
+\end{description}
+
+% If you don't cite any references, please comment the following two lines
+\bibliographystyle{ieee}
+\bibliography{20180805-WeeklyReport-NiuWenjie}
+
+\end{document}
