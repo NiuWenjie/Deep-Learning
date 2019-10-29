@@ -1,0 +1,48 @@
+1.tmux at -t pretrainedVGG 用VGG19预训练模型参数和结构，没有model.eval()
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_pretrained --model latentpretrained --gpu_ids 0 --direction AtoB --load_size 224 --crop_size 224
+
+2.tmux at -t VGG_eval 用VGG19预训练模型参数和结构，有model.eval()
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_pretrained_eval --model latentpretrained --gpu_ids 1 --direction AtoB --load_size 224 --crop_size 224
+(同1中代码，测试时注意model.eval())
+
+3.tmux at -t VGG+Linear 用VGG19预训练模型参数和结构，没有model.eval() 直接Linear后，加到Decoder
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_pretrained_Linear_decoder --model latentpretrainedv2 --gpu_ids 2 --direction AtoB --load_size 224 --crop_size 224
+Loss->0
+
+4.tmux at -t VGG+Linear_nodecoder latentpretrainedv2引用的是networks_origin
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_pretrained_Linear --model latentpretrainedv2 --gpu_ids 3 --direction AtoB --load_size 224 --crop_size 224
+
+
+-------------------------------------------------------------------------------------------------
+*tmux at -t decoder 预训练模型提取特征部分.eval()
+python train.py --dataroot ./datasets/edges2shoes/ --name Shoe_latent_eval_detach_decoder --model latentpretrainedv2 --gpu_ids 0 --direction AtoB --load_size 224 --crop_size 224
+
+*tmux at -t test 模型pretrainedmodel.eval()
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_modeleval --model latentpretrainedv2 --gpu_ids 1 --direction AtoB --load_size 224 --crop_size 224
+
+*tmux at -t z_detach  [self.pretrainedmodel.eval(),Extract key feature,z_detach()] 
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_z_detach --model latentpretrainedv2 --gpu_ids 2 --direction AtoB --load_size 224 --crop_size 224
+
+*tmux at -t concat 
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_shoe_concat --model latentpretrainedv3 --gpu_ids 3 --direction AtoB --load_size 224 --crop_size 224
+
+latentpretrainedv2 is extracting feature map
+
+-------------------------------------------------------------------------------------------------
+*tmux at -t linear  [results: D loss->0]
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_threshold_linear --model latentpretrained --gpu_ids 0 --direction AtoB --load_size 224 --crop_size 224 --batch_size 8
+
+*tmux at -t cat_decoder 
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_catbefore_decoder --model latentpretrainedv3 --gpu_ids 1 --direction AtoB --load_size 224 --crop_size 224 --batch_size 8
+
+*tmux at -t cat_res
+python train.py --dataroot ./datasets/edges2shoes/ --name Latent_catbefore_resblock --model latentpretrainedv4 --gpu_ids 1 --direction AtoB --load_size 224 --crop_size 224 --batch_size 8
+
+*tmux at -t skip 
+python train.py --dataroot ./datasets/edges2shoes --name Latent_coder_addskip --load_size 224 --crop_size 224 --model latentpretrainedskip --gpu_ids 3
+
+*tmux at -t resadd 
+python train.py --dataroot ./datasets/edges2shoes --name Latent_multiz_onres --load_size 224 --crop_size 224 --model latentpretrainedskip --gpu_ids 2
+-----------------------------------------------------------------------------------------------
+*
+
